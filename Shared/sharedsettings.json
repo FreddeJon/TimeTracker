@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DbConnection": "server=localhost;database=TimeTrackerDb;trusted_connection=true;"
+  }
+}
