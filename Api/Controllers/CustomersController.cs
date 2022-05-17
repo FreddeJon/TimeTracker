@@ -84,7 +84,7 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Put(Guid customerId, [FromBody] EditCustomerModel model)
+    public async Task<IActionResult> Edit(Guid customerId, [FromBody] EditCustomerModel model)
     {
         var response = await _mediator.Send(new ApiEditCustomerCommand(customerId,model.Name));
 
