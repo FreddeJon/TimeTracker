@@ -75,8 +75,15 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.NotFound) return NotFound(new { response.StatusText });
 
+        if (response.Errors is null || response.Errors.Count < 1)
+        {
+            return BadRequest(new { Status = response.StatusText });
+        }
 
-        return BadRequest(new { response.StatusText });
+
+        var errors = new List<string>();
+        response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
+        return BadRequest(new { response.StatusText, Errors = errors });
     }
 
 
