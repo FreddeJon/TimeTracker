@@ -1,8 +1,8 @@
 ﻿using Application.Contracts.Responses;
+using Application.Features.API.Customers.Commands.ApiCreateCustomer;
+using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
 using Application.Features.Customer.Command.CreateCustomer;
-using Application.Features.Customer.Query.GetCustomerById;
-using Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
 using MediatR;
 
 namespace Api.Controllers;
@@ -35,14 +35,9 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId)
     {
-        var response = await _mediator.Send(new GetCustomerByIdQuery(customerId));
+        var response = await _mediator.Send(new ApiGetCustomerByIdQuery(customerId));
 
-        if (response.StatusCode == IResponse.Status.Success)
-        {
-            return Ok(response.Customer);
-        }
-
-        return NotFound();
+        return response.StatusCode == IResponse.Status.Success ? Ok(response.Customer) : NotFound();
     }
 
 
@@ -57,19 +52,29 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateCustomerModel model)
     {
-        var response = await _mediator.Send(new CreateCustomerCommand(model.Name));
+        var response = await _mediator.Send(new ApiCreateCustomerCommand(model.Name));
 
         if (response.StatusCode == IResponse.Status.Success)
         {
             return CreatedAtAction(nameof(GetById), new { customerId = response.Customer.Id }, response.Customer);
         }
 
+
+
+        if (response.Errors.Count <= 1)
+        {
+            return BadRequest(new {Status = response.StatusText});
+        }
+
+
+
         var errors = new List<string>();
-
         response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
-
         return BadRequest(new { Status = response.StatusText, Errors = errors });
+
+
     }
+
 
 
     [HttpPut("{customerId:guid}")]
