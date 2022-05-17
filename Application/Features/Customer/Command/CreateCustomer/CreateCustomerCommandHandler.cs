@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Application.Contracts.Responses;
+﻿using Application.Contracts.Responses;
 
 namespace Application.Features.Customer.Command.CreateCustomer;
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerResponse>

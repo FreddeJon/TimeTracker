@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
+﻿namespace Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
 
 public class GetCustomersWithProjectsPaginatedQuery : IRequest<Response>
 {

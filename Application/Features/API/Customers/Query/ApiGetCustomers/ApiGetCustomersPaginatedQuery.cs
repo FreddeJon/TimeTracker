@@ -1,6 +1,4 @@
-﻿using AutoMapper.QueryableExtensions;
-
-namespace Application.Features.API.Customers.Query.ApiGetCustomers;
+﻿namespace Application.Features.API.Customers.Query.ApiGetCustomers;
 public class ApiGetCustomersPaginatedQuery : IRequest<ApiGetCustomersResponse>
 {
     public ApiGetCustomersPaginatedQuery(int limit = 20, int offset = 0)

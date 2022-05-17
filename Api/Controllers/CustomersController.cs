@@ -1,8 +1,8 @@
-﻿using Application.Contracts.Responses;
+﻿using System.ComponentModel.DataAnnotations;
+using Application.Contracts.Responses;
 using Application.Features.API.Customers.Commands.ApiCreateCustomer;
 using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
-using Application.Features.Customer.Command.CreateCustomer;
 using MediatR;
 
 namespace Api.Controllers;
@@ -44,6 +44,8 @@ public class CustomersController : ControllerBase
 
     public class CreateCustomerModel
     {
+        [Required]
+        [MaxLength(40)]
         public string Name { get; set; }
     }
 
@@ -56,23 +58,19 @@ public class CustomersController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return CreatedAtAction(nameof(GetById), new { customerId = response.Customer.Id }, response.Customer);
+            return CreatedAtAction(nameof(GetById), new { customerId = response.Customer!.Id }, response.Customer);
         }
 
 
-
-        if (response.Errors.Count <= 1)
+        if (response.Errors is null || response.Errors.Count < 1)
         {
-            return BadRequest(new {Status = response.StatusText});
+            return BadRequest(new { Status = response.StatusText });
         }
-
 
 
         var errors = new List<string>();
         response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
-        return BadRequest(new { Status = response.StatusText, Errors = errors });
-
-
+        return BadRequest(new { StatusText = response.StatusText, Errors = errors });
     }
 
 

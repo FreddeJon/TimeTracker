@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Persistence.Data;
 
 namespace Persistence;
 public static class RegisterPersistenceServices

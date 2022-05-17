@@ -1,6 +1,4 @@
-﻿using Application.DTO;
-
-namespace AdminApp.Models.Customer;
+﻿namespace AdminApp.Models.Customer;
 public class IndexCustomersViewModel
 {
     public List<ListCustomerViewModel> Customers { get; set; }
