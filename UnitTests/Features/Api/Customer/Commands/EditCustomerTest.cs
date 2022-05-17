@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-using Application.Features.API.Customers.Commands.ApiCreateCustomer;
-using Application.Features.API.Customers.Commands.ApiEditCustomer;
+﻿using Application.Features.API.Customers.Commands.ApiEditCustomer;
 
 namespace UnitTests.Features.Api.Customer.Commands;
 public class EditCustomerTest

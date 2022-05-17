@@ -1,5 +1,4 @@
-﻿using Application.Contracts.Responses;
-using Application.Features.API.Customers.Query.ApiGetCustomerById;
+﻿using Application.Features.API.Customers.Query.ApiGetCustomerById;
 
 namespace UnitTests.Features.Api.Customer.Query;
 public class GetCustomerByIdTest

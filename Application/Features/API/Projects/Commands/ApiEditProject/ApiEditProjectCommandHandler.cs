@@ -20,6 +20,7 @@ public class ApiEditProjectCommandHandler : IRequestHandler<ApiEditProjectComman
             response.StatusCode = IResponse.Status.Error;
             response.StatusText = "Validation failed, check errors";
             response.Error = result.Errors;
+            return response;
         }
 
         try

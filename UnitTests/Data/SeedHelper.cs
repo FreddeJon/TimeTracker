@@ -10,7 +10,20 @@ public static class SeedHelper
             new ()
             {
                 Name = "Apple",
-                Id = new Guid("5783CEE0-77EF-42C9-94A5-97EC06C39225")
+                Id = new Guid("5783CEE0-77EF-42C9-94A5-97EC06C39225"),
+                Projects = new HashSet<Project>()
+                {
+                    new ()
+                    {
+                        Id = new Guid("4B2884EF-AFF2-4191-A186-EA5AA77A51FE"),
+                        ProjectName = "Testing Something"
+                    },
+                    new ()
+                    {
+                        Id = new Guid("4B2884EF-AFF2-4191-A186-EA5AA77A51FD"),
+                        ProjectName = "Testing Something Else"
+                    }
+                }
             },
             new ()
             {
