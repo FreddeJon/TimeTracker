@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
+﻿namespace Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
 
 public class ApiCreateTimeRegisterCommandHandler : IRequestHandler<ApiCreateTimeRegisterCommand, ApiCreateTimeRegisterResponse>
 {

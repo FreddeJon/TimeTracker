@@ -103,7 +103,7 @@ public class ProjectsController : ControllerBase
         var response = await _mediator.Send(new ApiEditProjectCommand(customerId: customerId, projectId: projectId,
             projectName: model.ProjectName));
 
-        if (response.StatusCode == IResponse.Status.Success) return Ok(response.Project);
+        if (response.StatusCode == IResponse.Status.Success) return Ok(new { response.Project, response.StatusText });
 
 
         return response.StatusCode == IResponse.Status.NotFound ? NotFound(new { response.StatusText }) :

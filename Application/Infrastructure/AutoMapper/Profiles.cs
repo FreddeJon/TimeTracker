@@ -7,6 +7,8 @@ using Application.Features.API.Projects.Commands.ApiEditProject;
 using Application.Features.API.Projects.Query.ApiGetProjectById;
 using Application.Features.API.Projects.Query.ApiGetProjects;
 using Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
+using Application.Features.API.TimeRegister.Commands.ApiEditTimeRegistration;
+using Application.Features.API.TimeRegister.Query.ApiGetRegisterById;
 using Application.Features.API.TimeRegister.Query.ApiGetTimeRegistersPaginated;
 
 namespace Application.Infrastructure.AutoMapper;
@@ -52,6 +54,12 @@ public class Profiles : Profile
         CreateMap<TimeRegistration, ApiCreateTimeRegisterCommandHandler.TimeRegistrationDto>().ReverseMap();
 
 
+        // API GetTimeRegisterById
+        CreateMap<TimeRegistration, ApiGetTimeRegistrationByIdQueryHandler.TimeRegistrationDto>().ReverseMap();
+
+
+        // API EditTimeRegister
+        CreateMap<TimeRegistration, ApiEditTimeRegistrationCommandHandler.TimeRegistrationDto>().ReverseMap();
 
         CreateMap<Customer, CustomerDto>().ReverseMap();
         CreateMap<Project, ProjectDto>().ReverseMap();

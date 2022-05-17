@@ -1,18 +1,18 @@
-﻿namespace Application.Features.API.TimeRegister.Query.ApiGetTimeRegistersPaginated;
+﻿namespace Application.Features.API.TimeRegister.Query.ApiGetRegisterById;
 
-public class ApiGetTimeRegistersForProjectPaginatedQueryHandler : IRequestHandler<ApiGetTimeRegistersForProjectPaginatedQuery, ApiGetTimeRegistersResponse>
+public class ApiGetTimeRegistrationByIdQueryHandler : IRequestHandler<ApiGetTimeRegistrationByIdQuery, ApiGetTimeRegistrationByIdResponse>
 {
     private readonly IMapper _mapper;
     private readonly TimeTrackerContext _context;
 
-    public ApiGetTimeRegistersForProjectPaginatedQueryHandler(IMapper mapper, TimeTrackerContext context)
+    public ApiGetTimeRegistrationByIdQueryHandler(IMapper mapper, TimeTrackerContext context)
     {
         _mapper = mapper;
         _context = context;
     }
-    public async Task<ApiGetTimeRegistersResponse> Handle(ApiGetTimeRegistersForProjectPaginatedQuery request, CancellationToken cancellationToken)
+    public async Task<ApiGetTimeRegistrationByIdResponse> Handle(ApiGetTimeRegistrationByIdQuery request, CancellationToken cancellationToken)
     {
-        var response = new ApiGetTimeRegistersResponse();
+        var response = new ApiGetTimeRegistrationByIdResponse();
 
         try
         {
@@ -35,14 +35,17 @@ public class ApiGetTimeRegistersForProjectPaginatedQueryHandler : IRequestHandle
                 return response;
             }
 
-            var registers = await _mapper.ProjectTo<TimeRegistrationDto>(_context.TimeRegistrations
-                .Where(x => x.Project.Id == request.ProjectId).OrderByDescending(x => x.Date).Skip(request.Offset).Take(request.Limit))
-                .ToListAsync(cancellationToken: cancellationToken);
+            var registration = await _mapper.ProjectTo<TimeRegistrationDto>(_context.TimeRegistrations.Where(x => x.Project.Id == request.ProjectId))
+                .FirstOrDefaultAsync(x => x.Id == request.TimeRegistrationId, cancellationToken: cancellationToken);
+            if (registration is null)
+            {
+                response.StatusCode = IResponse.Status.NotFound;
+                response.StatusText = "TimeRegistration not found";
 
+                return response;
+            }
 
-            response.TimeRegistrations = registers;
-            response.TotalCount =
-                await _context.TimeRegistrations.Where(x => x.Project.Id == request.ProjectId).CountAsync(cancellationToken: cancellationToken);
+            response.TimeRegistrations = registration;
         }
         catch (Exception)
         {

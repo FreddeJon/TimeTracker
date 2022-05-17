@@ -4,6 +4,8 @@
 
 using Application.Contracts.Responses;
 using Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
+using Application.Features.API.TimeRegister.Commands.ApiEditTimeRegistration;
+using Application.Features.API.TimeRegister.Query.ApiGetRegisterById;
 using Application.Features.API.TimeRegister.Query.ApiGetTimeRegistersPaginated;
 
 namespace Api.Controllers;
@@ -37,11 +39,19 @@ public class TimeRegisterController : ControllerBase
         return StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
     }
 
-    // GET api/<TimeRegisterController>/5
     [HttpGet("{timeRegistrationId:guid}")]
-    public string GetById(Guid customerId, Guid projectId, Guid timeRegistrationId)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetById(Guid customerId, Guid projectId, Guid timeRegistrationId)
     {
-        return "Heyy";
+        var response = await _mediator.Send(new ApiGetTimeRegistrationByIdQuery(customerId: customerId,
+            projectId: projectId, timeRegistrationId: timeRegistrationId));
+
+        if (response.StatusCode == IResponse.Status.Success) return Ok(new { response.TimeRegistrations });
+
+        return response.StatusCode == IResponse.Status.NotFound ?
+            NotFound(new { response.StatusText }) :
+            StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
     }
 
 
@@ -71,15 +81,19 @@ public class TimeRegisterController : ControllerBase
     }
 
 
-    // PUT api/<TimeRegisterController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value, Guid customerId, Guid projectId)
+
+    [HttpPut("{timeRegistrationId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Edit(Guid customerId, Guid projectId, Guid timeRegistrationId, [FromBody] ApiEditTimeRegistrationCommand.EditTimeRegistrationModel model)
     {
+        var response = await _mediator.Send(new ApiEditTimeRegistrationCommand(customerId: customerId, projectId: projectId, timeRegistrationId: timeRegistrationId, model: model));
+
+        if (response.StatusCode == IResponse.Status.Success) return Ok(new { response.TimeRegistration, response.StatusText });
+
+
+        return response.StatusCode == IResponse.Status.NotFound ? NotFound(new { response.StatusText }) :
+            StatusCode(StatusCodes.Status500InternalServerError, response.StatusText);
     }
 
-    // DELETE api/<TimeRegisterController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id, Guid customerId, Guid projectId)
-    {
-    }
 }

@@ -5,6 +5,7 @@ public class TimeTrackerContext : DbContext
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<TimeRegistration> TimeRegistrations{ get; set; }
 
 
     public TimeTrackerContext(DbContextOptions<TimeTrackerContext> options) : base(options)
