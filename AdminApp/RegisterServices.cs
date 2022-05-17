@@ -7,10 +7,9 @@ public static class RegisterServices
         // Get Shared settings
         var sharedConfiguration = RegisterSharedSettings.GetSharedSettings();
 
-
-
         // Register automapper profiles
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
         // Register dependencies from other projects
         services.ConfigureApplicationServices();
 

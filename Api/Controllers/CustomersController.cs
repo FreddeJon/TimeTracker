@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Responses;
+using Application.Features.API.Customers.Query.ApiGetCustomers;
 using Application.Features.Customer.Command.CreateCustomer;
 using Application.Features.Customer.Query.GetCustomerById;
 using Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
@@ -21,10 +22,10 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
     {
-        var response = await _mediator.Send(new GetCustomersWithProjectsPaginatedQuery(limit, offset));
+        var response = await _mediator.Send(new ApiGetCustomersPaginatedQuery(limit, offset));
 
-
-        return Ok(response);
+        return response.StatusCode == IResponse.Status.Error ? StatusCode(StatusCodes.Status500InternalServerError, response.StatusText) :
+            Ok(new { response.StatusText, response.TotalCount, Data = response.Customers });
     }
 
 
