@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-
-namespace Application.Features.Customer.Query.GetCustomerById;
+﻿namespace Application.Features.Customer.Query.GetCustomerById;
 
 public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery, GetCustomerResponse>
 {

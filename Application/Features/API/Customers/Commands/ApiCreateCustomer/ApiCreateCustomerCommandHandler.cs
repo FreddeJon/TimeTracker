@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-
-namespace Application.Features.API.Customers.Commands.ApiCreateCustomer;
+﻿namespace Application.Features.API.Customers.Commands.ApiCreateCustomer;
 
 public class ApiCreateCustomerCommandHandler : IRequestHandler<ApiCreateCustomerCommand, ApiCreateCustomerResponse>
 {

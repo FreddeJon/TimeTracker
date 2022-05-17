@@ -1,4 +1,4 @@
-﻿namespace AdminApp.Infrastructure.AutoMapper;
+﻿namespace AdminApp.Infrastructure.Automapper;
 public class Profiles : Profile
 {
     public Profiles()

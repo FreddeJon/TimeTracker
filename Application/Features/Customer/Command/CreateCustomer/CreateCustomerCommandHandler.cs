@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-
-namespace Application.Features.Customer.Command.CreateCustomer;
+﻿namespace Application.Features.Customer.Command.CreateCustomer;
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, CreateCustomerResponse>
 {
     private readonly TimeTrackerContext _context;

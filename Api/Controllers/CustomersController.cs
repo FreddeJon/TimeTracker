@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Application.Contracts.Responses;
+﻿using Application.Contracts.Responses;
 using Application.Features.API.Customers.Commands.ApiCreateCustomer;
+using Application.Features.API.Customers.Commands.ApiEditCustomer;
 using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
-using MediatR;
 
 namespace Api.Controllers;
 
@@ -70,19 +69,41 @@ public class CustomersController : ControllerBase
 
         var errors = new List<string>();
         response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
-        return BadRequest(new { StatusText = response.StatusText, Errors = errors });
+        return BadRequest(new {response.StatusText, Errors = errors });
     }
 
 
 
+    public class EditCustomerModel
+    {
+        [Required]
+        [MaxLength(40)]
+        public string Name { get; set; }
+    }
     [HttpPut("{customerId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Put(Guid customerId)
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put(Guid customerId, [FromBody] EditCustomerModel model)
     {
-        return Ok("Hey");
-    }
+        var response = await _mediator.Send(new ApiEditCustomerCommand(customerId,model.Name));
 
+        if (response.StatusCode == IResponse.Status.Success) return Ok(response.Customer);
+
+        if (response.StatusCode == IResponse.Status.NotFound) return NotFound(response.StatusText);
+    
+
+
+        if (response.Errors is null || response.Errors.Count < 1)
+        {
+            return BadRequest(new { Status = response.StatusText });
+        }
+
+
+        var errors = new List<string>();
+        response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
+        return BadRequest(new { response.StatusText, Errors = errors });
+    }
 }
 
 

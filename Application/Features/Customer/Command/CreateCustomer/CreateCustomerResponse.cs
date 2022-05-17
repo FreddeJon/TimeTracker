@@ -1,6 +1,4 @@
-﻿using FluentValidation.Results;
-
-namespace Application.Features.Customer.Command.CreateCustomer;
+﻿namespace Application.Features.Customer.Command.CreateCustomer;
 
 public class CreateCustomerResponse : BaseResponse
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
+﻿namespace Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
 public class GetCustomersWithProjectsPaginatedQueryHandler  :IRequestHandler<GetCustomersWithProjectsPaginatedQuery, Response>
 {
     private readonly TimeTrackerContext _context;

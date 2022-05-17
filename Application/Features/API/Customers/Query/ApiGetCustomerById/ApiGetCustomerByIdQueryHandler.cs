@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-
-namespace Application.Features.API.Customers.Query.ApiGetCustomerById;
+﻿namespace Application.Features.API.Customers.Query.ApiGetCustomerById;
 
 public class ApiGetCustomerByIdQueryHandler : IRequestHandler<ApiGetCustomerByIdQuery, ApiGetCustomerResponse>
 {

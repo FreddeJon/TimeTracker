@@ -1,7 +1,4 @@
-﻿using Application.Contracts.Responses;
-using Microsoft.EntityFrameworkCore;
-
-namespace Application.Features.API.Customers.Query.ApiGetCustomers;
+﻿namespace Application.Features.API.Customers.Query.ApiGetCustomers;
 
 public class ApiGetCustomersPaginatedQueryHandler : IRequestHandler<ApiGetCustomersPaginatedQuery, ApiGetCustomersResponse>
 {

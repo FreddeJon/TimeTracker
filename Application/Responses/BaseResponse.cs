@@ -1,6 +1,4 @@
-﻿using Application.Contracts.Responses;
-
-namespace Application.Responses;
+﻿namespace Application.Responses;
 public class BaseResponse : IResponse
 {
     public BaseResponse()

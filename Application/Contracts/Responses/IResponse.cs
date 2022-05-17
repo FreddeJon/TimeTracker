@@ -7,6 +7,7 @@ public interface IResponse
     public enum Status
     {
         Error,
-        Success
+        Success,
+        NotFound
     }
 }
