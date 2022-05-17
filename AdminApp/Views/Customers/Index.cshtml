@@ -1,0 +1,22 @@
+﻿@model AdminApp.Models.Customer.IndexCustomersViewModel
+
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>All Customers </h1>
+<ul>
+    @foreach (var customer in Model.Customers)
+    {
+        <li>
+            <a asp-controller="Customers" asp-action="Edit" asp-route-customerId="@customer.Id">
+                @customer.Name
+            </a>
+
+        </li>
+    }
+</ul>
+<a asp-controller="Customers" asp-action="Create">
+  Create a new
+</a>

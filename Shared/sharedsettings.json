@@ -1,5 +1,12 @@
 {
-  "ConnectionStrings": {
-    "DbConnection": "server=localhost;database=TimeTrackerDb;trusted_connection=true;"
-  }
+    "ConnectionStrings": {
+        "DbConnection": "server=localhost;database=TimeTrackerDb;trusted_connection=true;"
+    },
+    "AzureAdB2CAdminClient": {
+        "Instance": "secret",
+        "Domain": "secret",
+        "ClientId": "secret",
+        "SignedOutCallbackPath": "/B2C_1_signupsignin",
+        "SignUpSignInPolicyId": "B2C_1_signupsignin"
+    }
 }
