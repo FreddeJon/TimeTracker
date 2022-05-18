@@ -13,7 +13,7 @@ public class EditCustomerTest
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<Profiles>();
+            cfg.AddProfile<ApiProfiles>();
         });
 
         var mapper = configurationProvider.CreateMapper();

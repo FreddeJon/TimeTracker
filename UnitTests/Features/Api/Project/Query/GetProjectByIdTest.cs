@@ -14,7 +14,7 @@ public class GetProjectByIdTest
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<Profiles>();
+            cfg.AddProfile<ApiProfiles>();
         });
 
         var mapper = configurationProvider.CreateMapper();
@@ -39,7 +39,7 @@ public class GetProjectByIdTest
         response.Project.ShouldNotBeNull();
         response.StatusCode.ShouldBe(IResponse.Status.Success);
     }
-   
+
     [Fact]
     public async Task InValid_customerId_should_not_get_project()
     {

@@ -2,7 +2,7 @@
 
 public class ApiEditCustomerValidator : AbstractValidator<ApiEditCustomerCommand>
 {
-    public ApiEditCustomerValidator( )
+    public ApiEditCustomerValidator()
     {
         RuleFor(x => x.CustomerId)
             .Cascade(CascadeMode.Stop)

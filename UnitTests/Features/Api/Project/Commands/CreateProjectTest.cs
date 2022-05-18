@@ -14,7 +14,7 @@ public class CreateProjectTest
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<Profiles>();
+            cfg.AddProfile<ApiProfiles>();
         });
 
         var mapper = configurationProvider.CreateMapper();
@@ -37,7 +37,7 @@ public class CreateProjectTest
         var response = await _sut.Handle(new ApiCreateProjectCommand(customerId: customerId, name: name), new CancellationToken());
 
 
-       (await _context.Customers.FindAsync(customerId))?.Projects.Count.ShouldBe(3);
+        (await _context.Customers.FindAsync(customerId))?.Projects.Count.ShouldBe(3);
 
         response.ShouldBeOfType<ApiCreateProjectResponse>();
         response.Project?.ProjectName.ShouldBe(name);

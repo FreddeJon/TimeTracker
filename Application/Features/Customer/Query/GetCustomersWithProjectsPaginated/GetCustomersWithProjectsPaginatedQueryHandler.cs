@@ -1,5 +1,5 @@
 ﻿namespace Application.Features.Customer.Query.GetCustomersWithProjectsPaginated;
-public class GetCustomersWithProjectsPaginatedQueryHandler  :IRequestHandler<GetCustomersWithProjectsPaginatedQuery, Response>
+public class GetCustomersWithProjectsPaginatedQueryHandler : IRequestHandler<GetCustomersWithProjectsPaginatedQuery, Response>
 {
     private readonly TimeTrackerContext _context;
     private readonly IMapper _mapper;

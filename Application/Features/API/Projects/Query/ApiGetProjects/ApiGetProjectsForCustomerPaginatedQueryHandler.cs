@@ -25,7 +25,7 @@ public class ApiGetProjectsForCustomerPaginatedQueryHandler : IRequestHandler<Ap
                 return response;
             }
 
-            var projects = await _mapper.ProjectTo<DTO.ProjectDto>(_context.Projects
+            var projects = await _mapper.ProjectTo<ProjectDto>(_context.Projects
                 .Where(x => x.Customer.Id == request.CustomerId).Skip(request.Offset)
                 .Take(request.Limit)).ToListAsync(cancellationToken: cancellationToken);
 

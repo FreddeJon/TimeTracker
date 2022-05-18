@@ -1,14 +1,17 @@
-﻿using Application.Contracts.Responses;
-using Application.Features.API.Projects.Commands.ApiCreateProject;
+﻿using Application.Features.API.Projects.Commands.ApiCreateProject;
 using Application.Features.API.Projects.Commands.ApiEditProject;
 using Application.Features.API.Projects.Query.ApiGetProjectById;
 using Application.Features.API.Projects.Query.ApiGetProjects;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 
 
+[Authorize]
 [Route("api/Customers/{customerId:guid}/[controller]")]
 [ApiController]
+[RequiredScope("read_data")]
 public class ProjectsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -25,20 +28,19 @@ public class ProjectsController : ControllerBase
     {
         var response =
             await _mediator.Send(
-                new ApiGetProjectsForCustomerPaginatedQuery(customerId: customerId, limit: limit, offset: offset));
+                new ApiGetProjectsForCustomerPaginatedQuery(customerId, limit, offset));
 
-        if (response.StatusCode == IResponse.Status.Success) return Ok(new
+        if (response.StatusCode == IResponse.Status.Success)
         {
-            Data = response.Projects,
-            response.TotalCount,
-            response.StatusText
-        });
+            return Ok(new { Data = response.Projects, response.TotalCount, response.StatusText });
+        }
 
-        return response.StatusCode == IResponse.Status.NotFound ? NotFound(response.StatusText) :
-            StatusCode(StatusCodes.Status500InternalServerError, response.StatusText);
+        return response.StatusCode == IResponse.Status.NotFound
+            ? NotFound(new { response.StatusText })
+            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
     }
 
-    [HttpGet("{projectId}")]
+    [HttpGet("{projectId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId, Guid projectId)
@@ -47,19 +49,13 @@ public class ProjectsController : ControllerBase
 
 
         if (response.StatusCode == IResponse.Status.Success)
-            return Ok(response.Project);
+        {
+            return Ok(new { response.Project });
+        }
 
-        return response.StatusCode == IResponse.Status.NotFound ? NotFound(response.StatusText)
-            : StatusCode(StatusCodes.Status500InternalServerError, response.StatusText);
-    }
-
-
-
-    public class CreateProjectModel
-    {
-        [Required]
-        [MaxLength(50)]
-        public string ProjectName { get; set; } = null!;
+        return response.StatusCode == IResponse.Status.NotFound
+            ? NotFound(new { response.StatusText })
+            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
     }
 
     [HttpPost]
@@ -67,13 +63,18 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(Guid customerId, [FromBody] CreateProjectModel model)
     {
-        var response = await _mediator.Send(new ApiCreateProjectCommand(customerId: customerId, name: model.ProjectName));
+        var response = await _mediator.Send(new ApiCreateProjectCommand(customerId, model.ProjectName));
 
         if (response.StatusCode == IResponse.Status.Success)
+        {
             return CreatedAtAction(nameof(GetById), new { CustomerId = customerId, ProjectId = response.Project!.Id },
-                response.Project);
+                new { response.Project });
+        }
 
-        if (response.StatusCode == IResponse.Status.NotFound) return NotFound(new { response.StatusText });
+        if (response.StatusCode == IResponse.Status.NotFound)
+        {
+            return NotFound(new { response.StatusText });
+        }
 
         if (response.Errors is null || response.Errors.Count < 1)
         {
@@ -86,27 +87,34 @@ public class ProjectsController : ControllerBase
         return BadRequest(new { response.StatusText, Errors = errors });
     }
 
-
-
-    public class EditProjectModel
-    {
-        [Required]
-        [MaxLength(50)]
-        public string ProjectName { get; set; } = null!;
-    }
-
     [HttpPut("{projectId:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Edit(Guid customerId, Guid projectId, [FromBody] EditProjectModel model)
     {
-        var response = await _mediator.Send(new ApiEditProjectCommand(customerId: customerId, projectId: projectId,
-            projectName: model.ProjectName));
+        var response = await _mediator.Send(new ApiEditProjectCommand(customerId, projectId,
+            model.ProjectName));
 
-        if (response.StatusCode == IResponse.Status.Success) return Ok(new { response.Project, response.StatusText });
+        if (response.StatusCode == IResponse.Status.Success)
+        {
+            return Ok(new { response.Project, response.StatusText });
+        }
 
 
-        return response.StatusCode == IResponse.Status.NotFound ? NotFound(new { response.StatusText }) :
-            StatusCode(StatusCodes.Status500InternalServerError, response.StatusText);
+        return response.StatusCode == IResponse.Status.NotFound
+            ? NotFound(new { response.StatusText })
+            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+    }
+
+
+    public class CreateProjectModel
+    {
+        [Required][MaxLength(50)] public string ProjectName { get; set; } = null!;
+    }
+
+
+    public class EditProjectModel
+    {
+        [Required][MaxLength(50)] public string ProjectName { get; set; } = null!;
     }
 }

@@ -14,7 +14,7 @@ public class GetAllProjectsTest
 
         var configurationProvider = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<Profiles>();
+            cfg.AddProfile<ApiProfiles>();
         });
 
         var mapper = configurationProvider.CreateMapper();
@@ -46,7 +46,7 @@ public class GetAllProjectsTest
     public async Task Valid_offset_and_limit_should_get_all_projects()
     {
         var customerId = new Guid("5783CEE0-77EF-42C9-94A5-97EC06C39225");
-        var response = await _sut.Handle(new ApiGetProjectsForCustomerPaginatedQuery(customerId: customerId, limit:1), new CancellationToken());
+        var response = await _sut.Handle(new ApiGetProjectsForCustomerPaginatedQuery(customerId: customerId, limit: 1), new CancellationToken());
 
         response.ShouldBeOfType<ApiGetProjectsForCustomerPaginatedResponse>();
         response.Projects?.Count.ShouldBe(1);

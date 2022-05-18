@@ -4,7 +4,7 @@ using Persistence.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
- builder.Services.ConfigureAdminApp();
+builder.Services.ConfigureAdminApp();
 
 var app = builder.Build();
 
