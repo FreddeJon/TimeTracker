@@ -2,8 +2,6 @@
 using Application.Features.API.Projects.Commands.ApiEditProject;
 using Application.Features.API.Projects.Query.ApiGetProjectById;
 using Application.Features.API.Projects.Query.ApiGetProjects;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 

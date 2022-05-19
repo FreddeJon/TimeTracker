@@ -4,8 +4,6 @@ using Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
 using Application.Features.API.TimeRegister.Commands.ApiEditTimeRegistration;
 using Application.Features.API.TimeRegister.Query.ApiGetRegisterById;
 using Application.Features.API.TimeRegister.Query.ApiGetTimeRegistersPaginated;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 

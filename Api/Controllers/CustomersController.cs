@@ -2,15 +2,13 @@
 using Application.Features.API.Customers.Commands.ApiEditCustomer;
 using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-[RequiredScope("read_data")]
+//[RequiredScope("read_data")]
 public class CustomersController : ControllerBase
 {
     private readonly IMediator _mediator;
