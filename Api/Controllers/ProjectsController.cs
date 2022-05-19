@@ -5,11 +5,8 @@ using Application.Features.API.Projects.Query.ApiGetProjects;
 
 namespace Api.Controllers;
 
-
-[Authorize]
 [Route("api/Customers/{customerId:guid}/[controller]")]
 [ApiController]
-[RequiredScope("read_data")]
 public class ProjectsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -30,12 +27,12 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { Data = response.Projects, response.TotalCount, response.StatusText });
+            return Ok(new {Data = response.Projects, response.TotalCount, response.StatusText});
         }
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new { response.StatusText })
-            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+            ? NotFound(new {response.StatusText})
+            : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 
     [HttpGet("{projectId:guid}")]
@@ -48,12 +45,12 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { response.Project });
+            return Ok(new {response.Project});
         }
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new { response.StatusText })
-            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+            ? NotFound(new {response.StatusText})
+            : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 
     [HttpPost]
@@ -65,24 +62,24 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return CreatedAtAction(nameof(GetById), new { CustomerId = customerId, ProjectId = response.Project!.Id },
-                new { response.Project });
+            return CreatedAtAction(nameof(GetById), new {CustomerId = customerId, ProjectId = response.Project!.Id},
+                new {response.Project});
         }
 
         if (response.StatusCode == IResponse.Status.NotFound)
         {
-            return NotFound(new { response.StatusText });
+            return NotFound(new {response.StatusText});
         }
 
         if (response.Errors is null || response.Errors.Count < 1)
         {
-            return BadRequest(new { Status = response.StatusText });
+            return BadRequest(new {Status = response.StatusText});
         }
 
 
         var errors = new List<string>();
         response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
-        return BadRequest(new { response.StatusText, Errors = errors });
+        return BadRequest(new {response.StatusText, Errors = errors});
     }
 
     [HttpPut("{projectId:guid}")]
@@ -95,24 +92,24 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { response.Project, response.StatusText });
+            return Ok(new {response.Project, response.StatusText});
         }
 
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new { response.StatusText })
-            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+            ? NotFound(new {response.StatusText})
+            : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 
 
     public class CreateProjectModel
     {
-        [Required][MaxLength(50)] public string ProjectName { get; set; } = null!;
+        [Required] [MaxLength(50)] public string ProjectName { get; set; } = null!;
     }
 
 
     public class EditProjectModel
     {
-        [Required][MaxLength(50)] public string ProjectName { get; set; } = null!;
+        [Required] [MaxLength(50)] public string ProjectName { get; set; } = null!;
     }
 }

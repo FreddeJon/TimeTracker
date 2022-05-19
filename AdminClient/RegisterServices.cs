@@ -18,11 +18,11 @@ public static class RegisterServices
         services.ConfigureApplicationServices();
 
 
-        services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<TimeTrackerContext>();
+        //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        //    .AddRoles<IdentityRole>()
+        //    .AddEntityFrameworkStores<TimeTrackerContext>();
 
-        services.AddControllersWithViews().AddApiControllers();
+        services.AddControllersWithViews();
 
         return services;
     }

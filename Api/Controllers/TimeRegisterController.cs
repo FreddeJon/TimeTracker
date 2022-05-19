@@ -1,18 +1,12 @@
-﻿// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-using Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
+﻿using Application.Features.API.TimeRegister.Commands.ApiCreateTimeRegister;
 using Application.Features.API.TimeRegister.Commands.ApiEditTimeRegistration;
 using Application.Features.API.TimeRegister.Query.ApiGetRegisterById;
 using Application.Features.API.TimeRegister.Query.ApiGetTimeRegistersPaginated;
 
 namespace Api.Controllers;
 
-
-
-[Authorize]
 [Route("Api/Customers/{customerId:guid}/Projects/{projectId:guid}/[controller]")]
 [ApiController]
-[RequiredScope("read_data")]
 public class TimeRegisterController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -34,16 +28,16 @@ public class TimeRegisterController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { Data = response.TimeRegistrations, response.TotalCount, response.StatusText });
+            return Ok(new {Data = response.TimeRegistrations, response.TotalCount, response.StatusText});
         }
 
         if (response.StatusCode == IResponse.Status.NotFound)
         {
-            return NotFound(new { response.StatusText });
+            return NotFound(new {response.StatusText});
         }
 
 
-        return StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+        return StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 
     [HttpGet("{timeRegistrationId:guid}")]
@@ -56,12 +50,12 @@ public class TimeRegisterController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { response.TimeRegistrations });
+            return Ok(new {response.TimeRegistrations});
         }
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new { response.StatusText })
-            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+            ? NotFound(new {response.StatusText})
+            : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 
 
@@ -87,19 +81,19 @@ public class TimeRegisterController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.NotFound)
         {
-            return NotFound(new { response.StatusText });
+            return NotFound(new {response.StatusText});
         }
 
 
         if (response.Errors is null || response.Errors.Count < 1)
         {
-            return BadRequest(new { response.StatusText });
+            return BadRequest(new {response.StatusText});
         }
 
 
         var errors = new List<string>();
         response.Errors.ForEach(x => errors.Add(x.ErrorMessage));
-        return BadRequest(new { response.StatusText, Errors = errors });
+        return BadRequest(new {response.StatusText, Errors = errors});
     }
 
 
@@ -114,12 +108,12 @@ public class TimeRegisterController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new { response.TimeRegistration, response.StatusText });
+            return Ok(new {response.TimeRegistration, response.StatusText});
         }
 
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new { response.StatusText })
-            : StatusCode(StatusCodes.Status500InternalServerError, new { response.StatusText });
+            ? NotFound(new {response.StatusText})
+            : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 }
