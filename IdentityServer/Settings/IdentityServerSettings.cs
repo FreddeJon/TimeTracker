@@ -11,6 +11,6 @@ public class IdentityServerSettings
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResource(name: "roles", displayName: "User Role (s)", new List<string>{"role"})
+            new IdentityResource( "roles", "User Role (s)", new List<string>(){"role"})
         };
 }

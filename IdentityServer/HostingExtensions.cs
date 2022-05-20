@@ -32,17 +32,14 @@ namespace IdentityServer
                     options.Events.RaiseSuccessEvents = true;
                     options.EmitStaticAudienceClaim = true;
                 })
-                //.AddInMemoryIdentityResources(Config.IdentityResources)
-                //.AddInMemoryApiScopes(Config.ApiScopes)
-                //.AddInMemoryClients(Config.Clients)
-                //.AddAspNetIdentity<ApplicationUser>();
-
-                .AddAspNetIdentity<ApplicationUser>()
                 .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
                 .AddInMemoryApiResources(identityServerSettings.ApiResources)
                 .AddInMemoryClients(identityServerSettings.Clients)
                 .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
-                .AddDeveloperSigningCredential();
+                .AddAspNetIdentity<ApplicationUser>()
+
+                .AddProfileService<ProfileService>();
+
 
 
 

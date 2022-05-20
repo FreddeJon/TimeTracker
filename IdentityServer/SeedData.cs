@@ -16,7 +16,13 @@ namespace IdentityServer
             {
                 var context = scope.ServiceProvider.GetService<IdentityDbContext>();
                 context.Database.Migrate();
+                if (!context.Roles.Any())
+                {
+                    context.Roles.Add(new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN" });
+                    context.Roles.Add(new IdentityRole() { Name = "User", NormalizedName = "USER" });
 
+                    context.SaveChanges();
+                }
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var alice = userMgr.FindByNameAsync("alice").Result;
                 if (alice == null)
@@ -39,6 +45,8 @@ namespace IdentityServer
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
                         }).Result;
+
+                    var hmm = userMgr.AddToRoleAsync(alice, "Admin").Result;
                     if (!result.Succeeded)
                     {
                         throw new Exception(result.Errors.First().Description);

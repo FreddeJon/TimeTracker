@@ -23,7 +23,7 @@ else
 
 
 
-await app.Services.InitializeStartData();
+//await app.Services.InitializeStartData();
 
 
 app.UseHttpsRedirection();

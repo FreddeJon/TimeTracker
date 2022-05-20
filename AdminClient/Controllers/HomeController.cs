@@ -1,10 +1,13 @@
 ﻿using AdminClient.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AdminClient.Controllers
 {
+
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,15 +17,20 @@ namespace AdminClient.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
+            var identity = HttpContext.User.Identity;
+
             return View();
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "Admin")]
         public IActionResult Privacy()
         {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var accessToken = Request.Headers["Authorization"];
             return View();
         }
 
