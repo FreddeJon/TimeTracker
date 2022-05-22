@@ -14,7 +14,7 @@ public class CustomersController : Controller
         _apiService = apiService;
     }
 
-    // GET: CustomerController
+
     [HttpGet]
     public async Task<ActionResult> Index(int page = 1)
     {
@@ -56,10 +56,9 @@ public class CustomersController : Controller
         }
 
         var client = await _apiService.GetClient(HttpContext);
-
-
         var httpResponse = await client.PostAsJsonAsync(
-            "Customers", new { model.Name });
+            "Customers", new {model.Name});
+
 
         if (httpResponse.IsSuccessStatusCode)
         {
@@ -71,6 +70,7 @@ public class CustomersController : Controller
 
         return View(model);
     }
+
 
     [HttpGet("{customerId:guid}/Edit")]
     public async Task<IActionResult> Edit(Guid customerId) //OnGet
@@ -101,7 +101,7 @@ public class CustomersController : Controller
         }
 
         var client = await _apiService.GetClient(HttpContext);
-        var httpResponse = await client.PutAsJsonAsync($"customers/{customerId}", new { model.Name });
+        var httpResponse = await client.PutAsJsonAsync($"customers/{customerId}", new {model.Name});
 
         if (httpResponse.IsSuccessStatusCode)
         {

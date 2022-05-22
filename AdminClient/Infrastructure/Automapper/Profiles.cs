@@ -9,6 +9,7 @@ public class Profiles : Profile
 
 
         CreateMap<ProjectDto, IndexProjectsViewModel.ListProjectViewModel>().ReverseMap();
+        CreateMap<ProjectDto, EditProjectViewModel>().ReverseMap();
         ;
     }
 }
