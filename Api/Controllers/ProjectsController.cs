@@ -18,6 +18,7 @@ public class ProjectsController : ControllerBase
 
 
     [HttpGet]
+    [Authorize("admin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(Guid customerId, int limit = 20, int offset = 0)
     {

@@ -22,6 +22,8 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(int limit = 20, int offset = 0)
     {
+        var identity = HttpContext.User.Identity;
+
         var response = await _mediator.Send(new ApiGetCustomersPaginatedQuery(limit, offset));
 
         return response.StatusCode == IResponse.Status.Error
@@ -31,6 +33,7 @@ public class CustomersController : ControllerBase
 
 
     [HttpGet("{customerId:guid}")]
+    [Authorize("admin")]
     [ProducesResponseType(typeof(ApiGetCustomerByIdQueryHandler.CustomerDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId)

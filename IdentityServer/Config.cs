@@ -78,7 +78,7 @@ public static class Config
                 AllowedCorsOrigins = { "http://localhost:3000" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "roles", "user_scope", "admin_scope" }
+                AllowedScopes = { "openid", "profile", "roles", "user_scope" }
             },
         };
 }
