@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServer.Pages.Account
+namespace IdentityServer.Pages.Account;
+
+public class AccessDeniedModel : PageModel
 {
-    public class AccessDeniedModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

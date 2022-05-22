@@ -16,9 +16,9 @@ public class ApiGetProjectsForCustomerPaginatedQueryHandler : IRequestHandler<Ap
 
         try
         {
-            var customerFound = await _context.Customers.AnyAsync(x => x.Id == request.CustomerId, cancellationToken: cancellationToken);
+            var customer = await _context.Customers.FindAsync(request.CustomerId);
 
-            if (!customerFound)
+            if (customer is null)
             {
                 response.StatusCode = IResponse.Status.NotFound;
                 response.StatusText = "Customer not found";
@@ -29,6 +29,7 @@ public class ApiGetProjectsForCustomerPaginatedQueryHandler : IRequestHandler<Ap
                 .Where(x => x.Customer.Id == request.CustomerId).Skip(request.Offset)
                 .Take(request.Limit)).ToListAsync(cancellationToken: cancellationToken);
 
+            response.Customer = _mapper.Map<CustomerDto>(customer);
             response.Projects = projects;
             response.TotalCount = await _context.Projects.Where(x => x.Customer.Id == request.CustomerId).CountAsync(cancellationToken: cancellationToken);
         }
@@ -41,7 +42,11 @@ public class ApiGetProjectsForCustomerPaginatedQueryHandler : IRequestHandler<Ap
 
         return response;
     }
-
+    public class CustomerDto
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
+    }
 
     public class ProjectDto
     {

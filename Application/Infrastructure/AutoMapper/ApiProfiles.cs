@@ -33,9 +33,11 @@ public class ApiProfiles : Profile
 
         // API GetProjects
         CreateMap<Project, ApiGetProjectsForCustomerPaginatedQueryHandler.ProjectDto>().ReverseMap();
+        CreateMap<Customer, ApiGetProjectsForCustomerPaginatedQueryHandler.CustomerDto>().ReverseMap();
 
         // API GetProjectById
         CreateMap<Project, ApiGetProjectByIdQueryHandler.ProjectDto>().ReverseMap();
+        CreateMap<Customer, ApiGetProjectByIdQueryHandler.CustomerDto>().ReverseMap();
 
         // API CreateProject
         CreateMap<Project, ApiCreateProjectCommandHandler.ProjectDto>().ReverseMap();

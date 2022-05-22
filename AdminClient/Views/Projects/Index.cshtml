@@ -1,0 +1,50 @@
+﻿@model AdminClient.Models.Project.IndexProjectsViewModel
+
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Projects for @Model.Customer.Name</h1>
+<div class="container-fluid">
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Projects</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.Projects)
+            {
+                <tr>
+                    <td>@project.ProjectName</td>
+                    <td>
+                        <a asp-controller="Projects" asp-action="Edit" asp-route-customerId="@Model.Customer.Id" asp-route-projectId="@project.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="container-fluid d-flex align-items-center">
+        <div class="col-2 cursor-pointer justify-content-start">
+            @if (Model.CurrentPage > 1)
+            {
+                <a class="btn btn-primary " asp-route-page="@(Model.CurrentPage - 1)"><i class="icon-arrow-left mr-3"></i>Previous</a>
+            }
+
+        </div>
+        <div class="col text-center">
+            <span>Page @Model.CurrentPage of @Model.TotalPage (<small>@Model.TotalProjects Projects</small>)</span>
+        </div>
+        <div class="col-2">
+            @if (Model.CurrentPage < Model.TotalPage)
+            {
+                <a class="btn btn-primary" asp-route-page="@(Model.CurrentPage + 1)">Next<i class="icon-arrow-right ml-3"></i></a>
+            }
+        </div>
+    </div>
+    <a asp-controller="Projects" asp-action="Create">Create a new</a>
+</div>

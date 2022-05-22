@@ -1,18 +1,17 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Reflection;
 
-namespace IdentityServer.Pages.Home
-{
-    [AllowAnonymous]
-    public class Index : PageModel
-    {
-        public string Version;
+namespace IdentityServer.Pages.Home;
 
-        public void OnGet()
-        {
-            Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+').First();
-        }
+[AllowAnonymous]
+public class Index : PageModel
+{
+    public string Version;
+
+    public void OnGet()
+    {
+        Version = typeof(Duende.IdentityServer.Hosting.IdentityServerMiddleware).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion.Split('+').First();
     }
 }

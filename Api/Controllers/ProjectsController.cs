@@ -27,7 +27,15 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new {Data = response.Projects, response.TotalCount, response.StatusText});
+            return Ok(new
+            {
+                response.Customer,
+                Data = response.Projects,
+                response.TotalCount,
+                limit,
+                offset,
+                response.StatusText
+            });
         }
 
         return response.StatusCode == IResponse.Status.NotFound
@@ -45,7 +53,7 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new {response.Project});
+            return Ok(new {response.Project, response.Customer});
         }
 
         return response.StatusCode == IResponse.Status.NotFound

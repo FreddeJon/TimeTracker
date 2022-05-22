@@ -1,37 +1,48 @@
-﻿namespace IdentityServer
+﻿namespace IdentityServer;
+
+public static class Config
 {
-    public static class Config
-    {
-        public static IEnumerable<IdentityResource> IdentityResources =>
-            new IdentityResource[]
-            {
+    public static IEnumerable<IdentityResource> IdentityResources =>
+        new IdentityResource[]
+        {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            };
-
-        public static IEnumerable<ApiScope> ApiScopes =>
-            new ApiScope[]
+            new IdentityResource( "roles", "User Role (s)", new List<string>(){"role"})
+        };
+    public static IEnumerable<ApiResource> ApiResources =>
+        new ApiResource[]
+        {
+            new ApiResource("TimeTrackerAPI", "TimeTracker API")
             {
-            new ApiScope("scope1"),
-            new ApiScope("scope2"),
-            };
+                Scopes = { "admin_scope", "user_scope" }
+            },
 
-        public static IEnumerable<Client> Clients =>
-            new Client[]
-            {
-            // m2m client credentials flow client
+        };
+    public static IEnumerable<ApiScope> ApiScopes =>
+        new ApiScope[]
+        {
+
+            new ApiScope(name:"admin_scope", new List<string>(){"role"}),
+            new ApiScope(name:"user_scope", new List<string>(){"role"}),
+
+        };
+
+    public static IEnumerable<Client> Clients =>
+        new Client[]
+        {
+            // Api
             new Client
             {
-                ClientId = "m2m.client",
+
+                ClientId = "TimeTrackerApi",
                 ClientName = "Client Credentials Client",
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
 
-                AllowedScopes = { "scope1" }
+                AllowedScopes = { "user_scope", "admin_scope" },
             },
 
-            // interactive client using code flow + pkce
+            // AdminClient
             new Client
             {
                 ClientId = "AdminClient",
@@ -39,13 +50,35 @@
 
                 AllowedGrantTypes = GrantTypes.Code,
 
-                RedirectUris = { "https://localhost:44300/signin-oidc" },
+                RedirectUris = { "https://localhost:5002/signin-oidc" },
                 FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
-                PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+
+                AlwaysIncludeUserClaimsInIdToken = true,
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" }
+                AllowedScopes = { "openid", "profile", "roles", "admin_scope" }
             },
-            };
-    }
+            // ReactClient
+            new Client
+            {
+                ClientId = "ReactClient",
+                ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
+
+                RequireClientSecret = false,
+
+                AllowedGrantTypes = GrantTypes.Code,
+
+                RedirectUris = { "http://localhost:3000" },
+                FrontChannelLogoutUri = "https://localhost:44300/signout-oidc",
+                PostLogoutRedirectUris = { "http://localhost:3000" },
+
+                AlwaysIncludeUserClaimsInIdToken = true,
+
+                AllowedCorsOrigins = { "http://localhost:3000" },
+
+                AllowOfflineAccess = true,
+                AllowedScopes = { "openid", "profile", "roles", "user_scope", "admin_scope" }
+            },
+        };
 }

@@ -2,6 +2,7 @@
 using Application.Features.API.Customers.Commands.ApiEditCustomer;
 using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
+using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 
@@ -25,15 +26,16 @@ public class CustomersController : ControllerBase
 
         return response.StatusCode == IResponse.Status.Error
             ? StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText})
-            : Ok(new {response.StatusText, response.TotalCount, Data = response.Customers});
+            : Ok(new {response.StatusText, response.TotalCount, limit, offset, Data = response.Customers});
     }
 
 
     [HttpGet("{customerId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiGetCustomerByIdQueryHandler.CustomerDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId)
     {
+        var identity = HttpContext.User.Identity;
         var response = await _mediator.Send(new ApiGetCustomerByIdQuery(customerId));
 
         return response.StatusCode == IResponse.Status.Success

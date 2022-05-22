@@ -1,22 +1,54 @@
-﻿@model AdminClient.Models.Customer.IndexCustomersViewModel
+﻿@model IndexCustomersViewModel
 
 
 @{
     ViewData["Title"] = "Customers";
 }
 
-<h1>All Customers </h1>
-<ul>
-    @foreach (var customer in Model.Customers)
-    {
-        <li>
-            <a asp-controller="Customers" asp-action="Edit" asp-route-customerId="@customer.Id">
-                @customer.Name
-            </a>
+<h1>Customers</h1>
+<div class="container-fluid">
 
-        </li>
-    }
-</ul>
-<a asp-controller="Customers" asp-action="Create">
-  Create a new
-</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Projects</th>
+            <th scope="col">Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var customer in Model.Customers)
+        {
+            <tr>
+                <td>@customer.Name</td>
+                <td>
+                    <a asp-controller="Projects" asp-action="Index" asp-route-customerId="@customer.Id">Projects</a>
+                </td>  
+                <td>
+                    <a asp-controller="Customers" asp-action="Edit" asp-route-customerId="@customer.Id">Edit</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="container-fluid d-flex align-items-center">
+        <div class="col-2 cursor-pointer justify-content-start">
+            @if (Model.CurrentPage > 1)
+            {
+                <a class="btn btn-primary " asp-route-page="@(Model.CurrentPage - 1)"><i class="icon-arrow-left mr-3"></i>Previous</a>
+            }
+
+        </div>
+        <div class="col text-center">
+            <span>Page @Model.CurrentPage of @Model.TotalPage (<small>@Model.TotalCustomers Customers</small>)</span>
+        </div>
+        <div class="col-2">
+            @if (Model.CurrentPage < Model.TotalPage)
+            {
+                <a class="btn btn-primary" asp-route-page="@(Model.CurrentPage + 1)">Next<i class="icon-arrow-right ml-3"></i></a>
+            }
+        </div>
+    </div>
+    <a asp-controller="Customers" asp-action="Create">Create a new</a>
+</div>
