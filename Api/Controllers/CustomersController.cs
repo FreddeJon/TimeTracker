@@ -2,7 +2,6 @@
 using Application.Features.API.Customers.Commands.ApiEditCustomer;
 using Application.Features.API.Customers.Query.ApiGetCustomerById;
 using Application.Features.API.Customers.Query.ApiGetCustomers;
-using Microsoft.Identity.Web.Resource;
 
 namespace Api.Controllers;
 
@@ -28,7 +27,14 @@ public class CustomersController : ControllerBase
 
         return response.StatusCode == IResponse.Status.Error
             ? StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText})
-            : Ok(new {response.StatusText, response.TotalCount, limit, offset, Data = response.Customers});
+            : Ok(new
+            {
+                response.StatusText,
+                response.TotalCount,
+                limit,
+                offset,
+                Data = response.Customers
+            });
     }
 
 
@@ -38,7 +44,6 @@ public class CustomersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId)
     {
-        var identity = HttpContext.User.Identity;
         var response = await _mediator.Send(new ApiGetCustomerByIdQuery(customerId));
 
         return response.StatusCode == IResponse.Status.Success
@@ -47,6 +52,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateCustomerModel model)
@@ -70,7 +76,8 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPut("{customerId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize("admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Edit(Guid customerId, [FromBody] EditCustomerModel model)
@@ -79,7 +86,7 @@ public class CustomersController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new {response.Customer});
+            return NoContent();
         }
 
         if (response.StatusCode == IResponse.Status.NotFound)
@@ -98,15 +105,13 @@ public class CustomersController : ControllerBase
         return BadRequest(new {response.StatusText, Errors = errors});
     }
 
-
     public class CreateCustomerModel
     {
-        [Required] [MaxLength(40)] public string Name { get; set; }
+        [Required] [MaxLength(40)] public string Name { get; set; } = null!;
     }
-
 
     public class EditCustomerModel
     {
-        [Required] [MaxLength(40)] public string Name { get; set; }
+        [Required] [MaxLength(40)] public string Name { get; set; } = null!;
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace AdminClient.Controllers;
+﻿// ReSharper disable ClassNeverInstantiated.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+#pragma warning disable CS8618
+namespace AdminClient.Controllers;
 
 [Authorize(Roles = "Admin")]
 [Route("[controller]")]
@@ -112,10 +116,9 @@ public class CustomersController : Controller
         return View(model);
     }
 
-
     private class EditCustomerResponse
     {
-        [JsonPropertyName("customer")] public CustomerDto Customer { get; set; }
+        [JsonPropertyName("customer")] public CustomerDto Customer { get; init; }
     }
 
     public class CreateCustomerResponse

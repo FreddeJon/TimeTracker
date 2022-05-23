@@ -98,7 +98,8 @@ public class TimeRegisterController : ControllerBase
 
 
     [HttpPut("{timeRegistrationId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize("admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Edit(Guid customerId, Guid projectId, Guid timeRegistrationId,
         [FromBody] ApiEditTimeRegistrationCommand.EditTimeRegistrationModel model)
@@ -113,7 +114,7 @@ public class TimeRegisterController : ControllerBase
 
 
         return response.StatusCode == IResponse.Status.NotFound
-            ? NotFound(new {response.StatusText})
+            ? NoContent()
             : StatusCode(StatusCodes.Status500InternalServerError, new {response.StatusText});
     }
 }

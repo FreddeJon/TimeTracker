@@ -1,4 +1,6 @@
-﻿namespace AdminClient.Controllers;
+﻿// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable ClassNeverInstantiated.Local
+namespace AdminClient.Controllers;
 
 [Route("customers/{customerId:guid}/[controller]")]
 public class ProjectsController : Controller
@@ -33,7 +35,7 @@ public class ProjectsController : Controller
 
         return View(new IndexProjectsViewModel
         {
-            Customer = _mapper.Map<CustomerDto>(response.Customer),
+            Customer = _mapper.Map<CustomerDto>(response?.Customer),
             Projects = _mapper.Map<List<IndexProjectsViewModel.ListProjectViewModel>>(response!.Data),
             TotalProjects = response.TotalCount,
             CurrentPage = page,
@@ -42,11 +44,6 @@ public class ProjectsController : Controller
         });
     }
 
-    [HttpGet("{projectId:guid}/Details")]
-    public ActionResult Details(Guid customerId, Guid projectId)
-    {
-        return View();
-    }
 
     [HttpGet(nameof(Create))]
     public async Task<ActionResult> Create(Guid customerId)
@@ -129,18 +126,17 @@ public class ProjectsController : Controller
         return View(model);
     }
 
-    public class GetDetailsResponse
+    private class GetDetailsResponse
     {
-        [JsonPropertyName("customer")] public CustomerDto Customer { get; set; }
+        [JsonPropertyName("customer")] public CustomerDto Customer { get; set; } = null!;
     }
 
-    public class EditProjectResponse
+    private class EditProjectResponse
     {
-        [JsonPropertyName("project")] public ProjectDto Project { get; set; }
+        [JsonPropertyName("project")] public ProjectDto Project { get; set; } = null!;
     }
 
-
-    public class GetProjectsResponse
+    private class GetProjectsResponse
     {
         [JsonPropertyName("statusText")] public string StatusText { get; set; } = null!;
 
@@ -148,7 +144,7 @@ public class ProjectsController : Controller
         [JsonPropertyName("limit")] public int Limit { get; set; }
         [JsonPropertyName("offset")] public int Offset { get; set; }
 
-        [JsonPropertyName("data")] public List<ProjectDto> Data { get; set; }
-        [JsonPropertyName("customer")] public CustomerDto Customer { get; set; }
+        [JsonPropertyName("data")] public List<ProjectDto> Data { get; set; } = null!;
+        [JsonPropertyName("customer")] public CustomerDto Customer { get; set; } = null!;
     }
 }

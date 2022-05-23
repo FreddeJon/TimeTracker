@@ -18,7 +18,6 @@ public class ProjectsController : ControllerBase
 
 
     [HttpGet]
-    [Authorize("admin")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(Guid customerId, int limit = 20, int offset = 0)
     {
@@ -63,6 +62,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize("admin")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(Guid customerId, [FromBody] CreateProjectModel model)
@@ -92,7 +92,8 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPut("{projectId:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize("admin")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Edit(Guid customerId, Guid projectId, [FromBody] EditProjectModel model)
     {
@@ -101,7 +102,7 @@ public class ProjectsController : ControllerBase
 
         if (response.StatusCode == IResponse.Status.Success)
         {
-            return Ok(new {response.Project, response.StatusText});
+            return NoContent();
         }
 
 
@@ -115,7 +116,6 @@ public class ProjectsController : ControllerBase
     {
         [Required] [MaxLength(50)] public string ProjectName { get; set; } = null!;
     }
-
 
     public class EditProjectModel
     {
