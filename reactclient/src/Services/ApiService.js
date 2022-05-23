@@ -1,14 +1,23 @@
-const baseUrl = "https://localhost:7189/";
+const baseUrl = "https://localhost:5003/";
 
-export const fetchCustomers = async () => {
-  const response = await fetch(baseUrl + "api/customers");
+export const fetchCustomers = async (access_token) => {
+  const response = await fetch(baseUrl + "api/customers", {
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  });
   const json = await response.json();
   return json;
 };
 
-export const fetchProjectsForCustomer = async (customerId) => {
+export const fetchProjectsForCustomer = async (customerId, access_token) => {
   const response = await fetch(
-    baseUrl + `api/customers/${customerId}/projects`
+    baseUrl + `api/customers/${customerId}/projects`,
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
   );
   const json = await response.json();
   return json;
@@ -16,10 +25,16 @@ export const fetchProjectsForCustomer = async (customerId) => {
 
 export const fetchTimeRegistrationsForProject = async (
   customerId,
-  projectId
+  projectId,
+  access_token
 ) => {
   const response = await fetch(
-    baseUrl + `api/customers/${customerId}/projects/${projectId}/timeregister`
+    baseUrl + `api/customers/${customerId}/projects/${projectId}/timeregister`,
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
   );
   const json = await response.json();
   return json;

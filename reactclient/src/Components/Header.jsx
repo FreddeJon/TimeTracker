@@ -1,27 +1,68 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import { useAuth } from "react-oidc-context";
+import { Button } from "@mui/material";
 
 const Header = () => {
+  const auth = useAuth();
+
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box sx={{ flexGrow: 1, mb: 3 }}>
       <AppBar position="static">
-        <Toolbar variant="dense">
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TimeTracker
+            <NavLink
+              to="/"
+              style={({ isActive }) => {
+                return {
+                  justifySelf: "start",
+                  margin: "1rem 0 1rem 1rem",
+                  color: isActive ? "orange" : "inherit",
+                  textDecoration: "none",
+                };
+              }}
+            >
+              Home
+            </NavLink>
+            <NavLink
+              to="/token"
+              style={({ isActive }) => {
+                return {
+                  justifySelf: "start",
+                  margin: "1rem 0 1rem 1rem",
+                  color: isActive ? "orange" : "inherit",
+                  textDecoration: "none",
+                };
+              }}
+            >
+              Token
+            </NavLink>
           </Typography>
+
+          {auth.isAuthenticated && (
+            <Button
+              color="inherit"
+              onClick={auth.signoutRedirect}
+              variant="text"
+            >
+              <p>Logout</p>
+            </Button>
+          )}
+          {!auth.isAuthenticated && (
+            <Button
+              color="inherit"
+              onClick={auth.signinRedirect}
+              variant="text"
+            >
+              <p>Login</p>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
