@@ -7,13 +7,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "react-oidc-context";
 import { Button } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
 
 const Header = () => {
   const auth = useAuth();
 
   return (
-    <Box sx={{ flexGrow: 1, mb: 3 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1, mb: 4 }}>
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: "#F4F4F6", color: "#161925" }}
+      >
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             TimeTracker
@@ -23,7 +28,9 @@ const Header = () => {
                 return {
                   justifySelf: "start",
                   margin: "1rem 0 1rem 1rem",
-                  color: isActive ? "orange" : "inherit",
+                  padding: "2px 0 2px 0",
+                  borderBottom: isActive ? "2px solid" : "none",
+                  color: isActive ? "#4B4237" : "#161925",
                   textDecoration: "none",
                 };
               }}
@@ -36,7 +43,9 @@ const Header = () => {
                 return {
                   justifySelf: "start",
                   margin: "1rem 0 1rem 1rem",
-                  color: isActive ? "orange" : "inherit",
+                  padding: "2px 0 2px 0",
+                  borderBottom: isActive ? "2px solid" : "none",
+                  color: isActive ? "#4B4237" : "#161925",
                   textDecoration: "none",
                 };
               }}
@@ -51,7 +60,8 @@ const Header = () => {
               onClick={auth.signoutRedirect}
               variant="text"
             >
-              <p>Logout</p>
+              Logout
+              <LogoutIcon sx={{ ml: 2 }} />
             </Button>
           )}
           {!auth.isAuthenticated && (
@@ -60,7 +70,8 @@ const Header = () => {
               onClick={auth.signinRedirect}
               variant="text"
             >
-              <p>Login</p>
+              Login
+              <LoginIcon sx={{ ml: 2 }} />
             </Button>
           )}
         </Toolbar>

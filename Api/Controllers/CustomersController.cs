@@ -39,7 +39,6 @@ public class CustomersController : ControllerBase
 
 
     [HttpGet("{customerId:guid}")]
-    [Authorize("admin")]
     [ProducesResponseType(typeof(ApiGetCustomerByIdQueryHandler.CustomerDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid customerId)

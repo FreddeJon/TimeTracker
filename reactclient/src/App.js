@@ -7,6 +7,7 @@ import Main from "./Components/Main";
 import SignoutCallback from "./Pages/SignoutCallback";
 import SigninCallback from "./Pages/SigninCallback";
 import Token from "./Pages/Token";
+import { Container } from "@mui/material";
 
 function App() {
   const auth = useAuth();
@@ -18,14 +19,42 @@ function App() {
           path="/"
           element={
             <>
-              <Header />
-              {auth.isAuthenticated && <Main />}
+              <Container
+                style={{ padding: "0" }}
+                sx={{
+                  backgroundColor: "#F4F4F6",
+                  height: "100vh",
+                }}
+              >
+                <Header />
+                {auth.isAuthenticated && (
+                  <>
+                    <Main />
+                  </>
+                )}
+              </Container>
             </>
           }
         ></Route>
         <Route path="/signin-oidc" element={<SigninCallback />}></Route>
         <Route path="/signout-oidc" element={<SignoutCallback />}></Route>
-        <Route path="/token" element={<Token />}></Route>
+        <Route
+          path="/token"
+          element={
+            <>
+              <Container
+                style={{ padding: "0" }}
+                sx={{
+                  backgroundColor: "#F4F4F6",
+                  height: "100vh",
+                }}
+              >
+                <Header />
+                <Token />
+              </Container>
+            </>
+          }
+        ></Route>
         <Route
           path="*"
           element={

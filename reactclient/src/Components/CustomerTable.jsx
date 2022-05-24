@@ -6,7 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
 
 const CustomerTable = ({ customers, clickSetCustomer }) => {
   return (
@@ -15,7 +14,6 @@ const CustomerTable = ({ customers, clickSetCustomer }) => {
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
-            <TableCell align="center">Select</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -23,12 +21,13 @@ const CustomerTable = ({ customers, clickSetCustomer }) => {
             <TableRow
               hover
               key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                cursor: "pointer",
+              }}
+              onClick={() => clickSetCustomer(row)}
             >
               <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="center">
-                <Button onClick={() => clickSetCustomer(row)}>Select</Button>
-              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -63,7 +63,7 @@ public class TimeRegisterController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(Guid customerId, Guid projectId,
-        [FromBody] ApiCreateTimeRegisterCommand.CreateTimeRegisterModel model)
+         ApiCreateTimeRegisterCommand.CreateTimeRegisterModel model)
     {
         var response = await _mediator.Send(new ApiCreateTimeRegisterCommand(customerId, projectId, model));
 

@@ -1,7 +1,10 @@
-import { Typography } from "@mui/material";
-import { Container } from "@mui/system";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "react-oidc-context";
+
+import { Typography } from "@mui/material";
+import { Container } from "@mui/system";
+import Paper from "@mui/material/Paper";
+
 import CustomerTable from "../Components/CustomerTable";
 import { fetchCustomers } from "../Services/ApiService";
 
@@ -21,8 +24,8 @@ const Customers = ({ setSelectedCustomer }) => {
 
   return (
     <>
-      <Container fixed>
-        <Typography variant="h2" color="text.secondary" sx={{ mb: 2 }}>
+      <Container component={Paper} sx={{ p: 3 }} fixed>
+        <Typography variant="h4" color="text.secondary" sx={{ mb: 2 }}>
           Customers
         </Typography>
         <CustomerTable
