@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAuth } from "react-oidc-context";
 
 import { Typography } from "@mui/material";
@@ -7,10 +7,13 @@ import Paper from "@mui/material/Paper";
 
 import CustomerTable from "../Components/CustomerTable";
 import { fetchCustomers } from "../Services/ApiService";
+import ApiHandler from "../Services/ApiHandler";
+import { ApiContext } from "../Contexts/ApiContext";
 
 const Customers = ({ setSelectedCustomer }) => {
   const [customers, setCustomers] = useState([]);
   const auth = useAuth();
+
   const clickSetCustomer = (customer) => {
     setSelectedCustomer(customer);
   };
@@ -20,7 +23,7 @@ const Customers = ({ setSelectedCustomer }) => {
     fetchCustomers(token).then((result) => {
       setCustomers(result.data);
     });
-  }, [auth.user?.access_token]);
+  }, [auth.user?.access_token, fetchCustomers]);
 
   return (
     <>

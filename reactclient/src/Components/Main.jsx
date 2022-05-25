@@ -5,14 +5,15 @@ import Customers from "../Pages/Customers";
 const Main = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-  if (selectedCustomer)
-    return (
-      <Projects
-        selectedCustomer={selectedCustomer}
-        setSelectedCustomer={setSelectedCustomer}
-      />
-    );
+  // if (selectedCustomer)
+  //   return (
+  //     <Projects
+  //       selectedCustomer={selectedCustomer}
+  //       setSelectedCustomer={setSelectedCustomer}
+  //     />
+  //   );
 
+  // return (<CustomerProvider)
   return <Customers setSelectedCustomer={setSelectedCustomer} />;
 };
 

@@ -1,18 +1,32 @@
-import React from "react";
 import axios from "axios";
 import { useAuth } from "react-oidc-context";
 
-const baseURL = "https://localhost:5003/api/"
-
+const baseURL = "https://localhost:5003/api/";
 
 const ApiHandler = () => {
-    axios.defaults.baseURL = baseURL;
-const auth = useAuth();
+  const client = axios.create({
+    baseURL: baseURL,
+    timeout: 1000,
+  });
 
-
-const getCustomers()
-
-  return {}
+  const fetchCustomers = (accessToken) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+    client
+      .get("customers")
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  };
+  return { fetchCustomers };
 };
-
 export default ApiHandler;
