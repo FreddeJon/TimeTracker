@@ -4,5 +4,5 @@ public class ApiGetProjectsForCustomerPaginatedResponse : BaseResponse
 {
     public int TotalCount { get; set; }
     public List<ApiGetProjectsForCustomerPaginatedQueryHandler.ProjectDto>? Projects { get; set; }
-    public ApiGetProjectsForCustomerPaginatedQueryHandler.CustomerDto Customer { get; set; }
+    public ApiGetProjectsForCustomerPaginatedQueryHandler.CustomerDto Customer { get; set; } = null!;
 }

@@ -32,8 +32,8 @@ const TimeRegistrationTable = ({ registrations }) => {
             >
               <TableCell align="left">
                 {
-                  new Date(row.date).toISOString().slice(0, 10)
-                  // new Date(row.date).toDateString()
+                  // new Date(row.date).toISOString().slice(0, 10)
+                  new Date(row.date).toDateString()
                 }
               </TableCell>
               <TableCell align="left">

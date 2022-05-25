@@ -3,7 +3,7 @@
 #pragma warning disable CS8618
 namespace Persistence;
 
-public class TimeTrackerContext : IdentityDbContext
+public class TimeTrackerContext : DbContext
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Project> Projects { get; set; }

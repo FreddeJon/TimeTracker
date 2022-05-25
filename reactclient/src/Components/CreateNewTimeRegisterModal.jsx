@@ -6,10 +6,8 @@ import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { Button, Divider } from "@mui/material";
-import "react-datepicker/dist/react-datepicker.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { postTimeRegistration } from "../Services/ApiService";
 import { useAuth } from "react-oidc-context";
 
@@ -27,7 +25,7 @@ const style = {
 const defaultValues = {
   timeInMinutes: "",
   description: "",
-  date: new Date().toISOString().slice(0, 10),
+  date: new Date(),
 };
 
 export default function BasicModal({
@@ -36,19 +34,14 @@ export default function BasicModal({
   selectedProject,
   selectedCustomer,
 }) {
-  const [startDate, setStartDate] = useState(new Date());
   const [formValues, setFormValues] = useState(defaultValues);
 
   const auth = useAuth();
 
-  const handleDate = (date) => {
-    setStartDate(date);
-    setFormValues({ ...formValues, date: date.toISOString().slice(0, 10) });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     var token = auth.user?.access_token;
+    debugger;
     postTimeRegistration(
       selectedCustomer.id,
       selectedProject.id,
@@ -65,6 +58,8 @@ export default function BasicModal({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    debugger;
     setFormValues({
       ...formValues,
       [name]: value,
@@ -112,7 +107,6 @@ export default function BasicModal({
             onChange={handleInputChange}
             sx={{ mb: 3 }}
           />
-
           <TextField
             id="description"
             name="description"
@@ -124,9 +118,17 @@ export default function BasicModal({
             onChange={handleInputChange}
             sx={{ mb: 3 }}
           />
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => handleDate(date)}
+          <TextField
+            id="date"
+            name="date"
+            required
+            type="date"
+            label="Date"
+            onChange={handleInputChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{ mb: 3 }}
           />
           <Button type="submit">Save</Button>
         </FormControl>

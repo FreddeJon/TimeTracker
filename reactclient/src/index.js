@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AuthProvider } from "react-oidc-context";
-import { config } from "./utils/oidc-config";
+import { config } from "./Utils/oidc-config";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

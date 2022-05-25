@@ -39,7 +39,7 @@ public class CreateCustomerTest
 
         response.ShouldBeOfType<ApiCreateCustomerResponse>();
         response.StatusCode.ShouldBe(IResponse.Status.Success);
-        response.Customer.Name.ShouldBe("Apple");
+        response.Customer?.Name.ShouldBe("Apple");
     }
 
 
@@ -55,7 +55,7 @@ public class CreateCustomerTest
         response.ShouldBeOfType<ApiCreateCustomerResponse>();
         response.StatusCode.ShouldBe(IResponse.Status.Error);
         response.Customer.ShouldBeNull();
-        response.Errors.Count.ShouldBeGreaterThan(0);
+        response.Errors?.Count.ShouldBeGreaterThan(0);
     }
 
 
@@ -70,6 +70,6 @@ public class CreateCustomerTest
         response.ShouldBeOfType<ApiCreateCustomerResponse>();
         response.StatusCode.ShouldBe(IResponse.Status.Error);
         response.Customer.ShouldBeNull();
-        response.Errors.Count.ShouldBeGreaterThan(0);
+        response.Errors?.Count.ShouldBeGreaterThan(0);
     }
 }

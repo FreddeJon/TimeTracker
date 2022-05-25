@@ -8,28 +8,23 @@ import { Divider } from "@mui/material";
 const Token = () => {
   const auth = useAuth();
   return (
-    <>
-      <Container
-        component={Paper}
-        sx={{ maxWidth: 500, wordWrap: "break-word", p: 3 }}
-      >
-        <Container sx={{ maxWidth: 500, wordWrap: "break-word", p: 3 }}>
-          <Typography variant="h2" color="text.secondary">
-            Access Token
-          </Typography>
-          <Divider />
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              mt: 2,
-            }}
-          >
-            {auth.user?.access_token}
-          </Typography>
-        </Container>
+    <Container component={Paper} fixed={true} sx={{ width: 500, p: 3 }}>
+      <Container sx={{ maxWidth: 500, wordWrap: "break-word", p: 3 }}>
+        <Typography variant="h5" color="text.secondary">
+          Access Token
+        </Typography>
+        <Divider />
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            mt: 2,
+          }}
+        >
+          {auth.user?.access_token}
+        </Typography>
       </Container>
-    </>
+    </Container>
   );
 };
 

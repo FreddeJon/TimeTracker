@@ -6,5 +6,5 @@ public class CreateProjectViewModel
 
     [MaxLength(40, ErrorMessage = "Maximum length is 40")]
     [Required(ErrorMessage = "Project Name is required")]
-    public string ProjectName { get; set; }
+    public string ProjectName { get; set; } = null!;
 }

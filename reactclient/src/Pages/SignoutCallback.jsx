@@ -1,6 +1,5 @@
 import React from "react";
 import { useAuth } from "react-oidc-context";
-import Header from "../Components/Header";
 
 const SignoutCallback = () => {
   const auth = useAuth();
@@ -9,12 +8,7 @@ const SignoutCallback = () => {
     auth.removeUser();
   }
 
-  return (
-    <>
-      <Header />
-      <div>Logged Out</div>
-    </>
-  );
+  return <div>Logged Out</div>;
 };
 
 export default SignoutCallback;

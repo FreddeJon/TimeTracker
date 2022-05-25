@@ -24,7 +24,6 @@ const CreateTimeRegistration = () => {
   }, []);
 
   useEffect(() => {
-    debugger;
     if (!currentCustomer) {
       return;
     }
