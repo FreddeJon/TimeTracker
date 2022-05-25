@@ -1,81 +1,71 @@
-import React, { useState } from "react";
-
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import { Button, Divider } from "@mui/material";
-// import "react-datepicker/dist/react-datepicker.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
-import { postTimeRegistration } from "../Services/ApiService";
+import {
+  Button,
+  Divider,
+  FormControl,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Box, Container } from "@mui/system";
+import React, { useContext, useState } from "react";
 import { useAuth } from "react-oidc-context";
+import { DataContext } from "../../Contexts/DataContext";
+import {
+  fetchTimeRegistrationsForProject,
+  postTimeRegistration,
+} from "../../Services/ApiService";
 
-const style = {
-  position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  boxShadow: 24,
-  p: 4,
-  pt: 3,
-};
 const defaultValues = {
   timeInMinutes: "",
   description: "",
   date: new Date(),
 };
 
-export default function BasicModal({
-  open,
-  handleClose,
-  selectedProject,
-  selectedCustomer,
-}) {
+const NewRegisterForm = () => {
+  const { activeCustomer, activeProject, setTimeRegisters } =
+    useContext(DataContext);
+
   const [formValues, setFormValues] = useState(defaultValues);
-
   const auth = useAuth();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    var token = auth.user?.access_token;
-    debugger;
-    postTimeRegistration(
-      selectedCustomer.id,
-      selectedProject.id,
-      token,
-      formValues
-    ).then((response) => {
-      if (response.status === 400) {
-      } else {
-        setFormValues(defaultValues);
-        handleClose();
-      }
-    });
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    debugger;
     setFormValues({
       ...formValues,
       [name]: value,
     });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    var token = auth.user?.access_token;
+    postTimeRegistration(
+      activeCustomer.id,
+      activeProject.id,
+      token,
+      formValues
+    ).then((response) => {
+      if (response.status === 400) {
+      } else {
+        setFormValues(defaultValues);
+
+        fetchTimeRegistrationsForProject(
+          activeCustomer.id,
+          activeProject.id,
+          token
+        ).then((response) => {
+          if (response.status === 400) {
+            console.log(response);
+          }
+          setTimeRegisters(response.data);
+        });
+      }
+    });
+  };
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Container sx={{ maxWidth: "auto", height: 366, pt: 4 }} component={Paper}>
       <Box
         component="form"
-        sx={style}
         noValidate={false}
         autoComplete="off"
         onSubmit={handleSubmit}
@@ -85,43 +75,41 @@ export default function BasicModal({
           variant="h5"
           sx={{ mb: 1, width: "100%" }}
         >
-          New timeregister
+          Register for {activeProject.projectName}
         </Typography>
         <Divider />
-        <Typography
-          id="modal-modal-title"
-          variant="subtitle1"
-          component="h2"
-          sx={{ mb: 2, mt: 1, width: "100%" }}
-        >
-          {selectedProject.projectName}
-        </Typography>
         <FormControl fullWidth>
           <TextField
+            variant="standard"
             id="timeInMinutes"
             name="timeInMinutes"
             required
+            value={formValues.timeInMinutes}
             label="Minutes"
             placeholder="How many minutes?"
             type="number"
             onChange={handleInputChange}
-            sx={{ mb: 3 }}
+            sx={{ mb: 1 }}
           />
           <TextField
+            variant="standard"
             id="description"
             name="description"
             label="Description"
+            value={formValues.description}
             required
             multiline
-            rows={4}
+            rows={2}
             placeholder="What have you done?"
             onChange={handleInputChange}
             sx={{ mb: 3 }}
           />
           <TextField
+            variant="standard"
             id="date"
             name="date"
             required
+            value={formValues.date}
             type="date"
             label="Date"
             onChange={handleInputChange}
@@ -130,9 +118,11 @@ export default function BasicModal({
             }}
             sx={{ mb: 3 }}
           />
-          <Button type="submit">Save</Button>
+          <Button type="submit">Add</Button>
         </FormControl>
       </Box>
-    </Modal>
+    </Container>
   );
-}
+};
+
+export default NewRegisterForm;

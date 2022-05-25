@@ -10,6 +10,7 @@ const DataProvider = ({ children }) => {
 
   const [projects, setProjects] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [timeRegisters, setTimeRegisters] = useState([]);
 
   return (
     <DataContext.Provider
@@ -22,6 +23,8 @@ const DataProvider = ({ children }) => {
         setProjects,
         customers,
         setCustomers,
+        timeRegisters,
+        setTimeRegisters,
       }}
     >
       {children}

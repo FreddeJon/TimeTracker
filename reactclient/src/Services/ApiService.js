@@ -1,7 +1,7 @@
 const baseUrl = "https://localhost:5003/";
 
 export const fetchCustomers = async (access_token) => {
-  const response = await fetch(baseUrl + "api/customers", {
+  const response = await fetch(baseUrl + "api/customers?limit=10", {
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
@@ -12,7 +12,7 @@ export const fetchCustomers = async (access_token) => {
 
 export const fetchProjectsForCustomer = async (customerId, access_token) => {
   const response = await fetch(
-    baseUrl + `api/customers/${customerId}/projects`,
+    baseUrl + `api/customers/${customerId}/projects?limit=10`,
     {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -29,7 +29,8 @@ export const fetchTimeRegistrationsForProject = async (
   access_token
 ) => {
   const response = await fetch(
-    baseUrl + `api/customers/${customerId}/projects/${projectId}/timeregister`,
+    baseUrl +
+      `api/customers/${customerId}/projects/${projectId}/timeregister?limit=10`,
     {
       headers: {
         Authorization: `Bearer ${access_token}`,

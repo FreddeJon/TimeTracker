@@ -8,12 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { DataContext } from "../Contexts/DataContext";
 
-const CustomerTable = ({ customers, clickSetCustomer }) => {
-  const { customers: cust, setActiveCustomer } = useContext(DataContext);
+const CustomerTable = () => {
+  const { customers } = useContext(DataContext);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 550 }} size="small" aria-label="a dense table">
+    <TableContainer sx={{ maxWidth: "auto", height: 366 }} component={Paper}>
+      <Table size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -21,21 +21,36 @@ const CustomerTable = ({ customers, clickSetCustomer }) => {
         </TableHead>
         <TableBody>
           {customers.map((row) => (
-            <TableRow
-              hover
-              key={row.id}
-              sx={{
-                "&:last-child td, &:last-child th": { border: 0 },
-                cursor: "pointer",
-              }}
-              onClick={() => clickSetCustomer(row)}
-            >
-              <TableCell align="left">{row.name}</TableCell>
-            </TableRow>
+            <CustomerTableRow key={row.id} row={row} />
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+  );
+};
+
+const CustomerTableRow = ({ row }) => {
+  const { setActiveCustomer, setActiveProject, activeCustomer } =
+    useContext(DataContext);
+
+  const handleSelect = (row) => {
+    setActiveProject(null);
+    setActiveCustomer(row);
+  };
+
+  return (
+    <TableRow
+      hover
+      selected={activeCustomer === row}
+      key={row.id}
+      sx={{
+        "&:last-child td, &:last-child th": { border: 0 },
+        cursor: "pointer",
+      }}
+      onClick={() => handleSelect(row)}
+    >
+      <TableCell align="left">{row.name}</TableCell>
+    </TableRow>
   );
 };
 
