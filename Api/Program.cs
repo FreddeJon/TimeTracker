@@ -1,7 +1,7 @@
 ﻿using Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
-using Persistence;
+using Persistence.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 
 
-builder.Services.ConfigurePersistenceServices();
+//builder.Services.ConfigurePersistenceServices();
 builder.Services.ConfigureApplicationServices();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -43,5 +43,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await app.Services.InitializeStartData();
 
 app.Run();

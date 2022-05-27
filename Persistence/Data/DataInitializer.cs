@@ -8,22 +8,21 @@ public static class DataInitializer
         try
         {
             var context = scope.ServiceProvider.GetService<TimeTrackerContext>();
-            var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
-            var accountOptions = scope.ServiceProvider.GetService<IOptions<AccountOptions>>()?.Value;
 
-            if (context is null || userManager is null)
+
+            if (context is null)
             {
-                throw new Exception();
+                throw new Exception("Problem with db");
             }
 
-            if (accountOptions?.AdminOptions is null || accountOptions.UserOptions is null)
-            {
-                throw new Exception();
-            }
+
 
 
             await context.Database.MigrateAsync();
 
+            await context.Customers.AddRangeAsync(GetData());
+
+            await context.SaveChangesAsync();
 
         }
         finally
@@ -32,4 +31,74 @@ public static class DataInitializer
         }
     }
 
+    public static List<Customer> GetData()
+    {
+        var data = new List<Customer>()
+        {
+            new()
+            {
+                Name = "Klarna",
+                Projects = new HashSet<Project>()
+                {
+                    new()
+                    {
+                        ProjectName = "Fix Databases",
+                        TimeRegistrations = new HashSet<TimeRegistration>() { new()
+                        {
+                            Date = DateTime.Now.AddDays(-2),
+                            Description = "Did some stuff",
+                            TimeInMinutes = 60,
+                        }}
+                    },           
+                    new()
+                    {
+                        ProjectName = "Payment",
+                        TimeRegistrations = new HashSet<TimeRegistration>() { new()
+                        {
+                            Date = DateTime.Now.AddDays(-2),
+                            Description = "Did some stuff",
+                            TimeInMinutes = 60,
+                        }}
+                    }
+                }
+            },
+            new()
+            {
+                Name = "Apple",
+                Projects = new HashSet<Project>()
+                {
+                    new()
+                    {
+                        ProjectName = "Apple Pay",
+                        TimeRegistrations = new HashSet<TimeRegistration>() { new()
+                        {
+                            Date = DateTime.Now.AddDays(-2),
+                            Description = "Did some stuff",
+                            TimeInMinutes = 80,
+                        }}
+                    }
+                },
+
+            },
+            new()
+            {
+                Name = "Microsoft",
+                Projects = new HashSet<Project>()
+                {
+                    new()
+                    {
+                        ProjectName = "Backend",
+                        TimeRegistrations = new HashSet<TimeRegistration>() { new()
+                        {
+                            Date = DateTime.Now.AddDays(-2),
+                            Description = "Did some stuff",
+                            TimeInMinutes = 90,
+                        }}
+                    }
+                },
+
+            }
+        };
+        return data;
+    }
 }

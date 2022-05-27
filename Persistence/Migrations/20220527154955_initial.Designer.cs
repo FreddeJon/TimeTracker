@@ -12,7 +12,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(TimeTrackerContext))]
-    [Migration("20220518142254_initial")]
+    [Migration("20220527154955_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
